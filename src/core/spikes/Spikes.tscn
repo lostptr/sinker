@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://core/player/inverse_shader.shader" type="Shader" id=1]
+[ext_resource path="res://core/tileset/black_tileset.png" type="Texture" id=2]
+[ext_resource path="res://core/spikes/Spikes.gd" type="Script" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 6.75, 2 )
+
+[node name="Spikes" type="Area2D"]
+gravity = 0.0
+collision_layer = 8
+collision_mask = 5
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 1 )
+position = Vector2( 0, 1 )
+texture = ExtResource( 2 )
+vframes = 8
+hframes = 8
+frame = 24
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -0.5, 7 )
+shape = SubResource( 2 )
+[connection signal="area_entered" from="." to="." method="_on_Spikes_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_Spikes_body_entered"]
