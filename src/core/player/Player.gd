@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 signal update_me(player)
 
-const UP: Vector2 = Vector2(0, -1) 
+const UP: Vector2 = Vector2(0, -1)
 const SLOPE_STOP: float = 32.0
 
 export var gravity: float = 1700
@@ -14,7 +14,6 @@ onready var feet: CollisionShape2D = $FeetCollision
 onready var head: CollisionShape2D = $HeadCollision
 onready var anim: AnimationPlayer = $AnimationPlayer
 onready var sink_timer: Timer = $SinkTimer
-onready var raycast: RayCast2D = $Direction
 
 onready var left_side_raycasts = $WallRaycasts/LeftSideRaycasts
 onready var right_side_raycasts = $WallRaycasts/RightSideRaycasts
@@ -32,8 +31,8 @@ func _input(event: InputEvent) -> void:
 		velocity.y = jump_velocity * gravity_multiplier
 		anim.play("jump")
 		anim.queue("falling")
-		
-	if event.is_action_pressed("dash"):
+
+	if event.is_action_pressed("sink"):
 		self.is_sinkable = not self.is_sinkable
 
 func _physics_process(delta: float) -> void:
@@ -41,16 +40,12 @@ func _physics_process(delta: float) -> void:
 	velocity.y += gravity * delta * gravity_multiplier
 	velocity = move_and_slide(self.velocity, UP * gravity_multiplier, SLOPE_STOP)
 	is_grounded = self.is_on_floor()
-	update_raycast()
 	update_animation()
 	emit_signal("update_me", self)
 
 func get_input() -> void:
 	move_direction = -int(Input.is_action_pressed("left")) + int(Input.is_action_pressed("right"))
 	velocity.x = lerp(velocity.x, move_speed * move_direction, 0.2)
-
-func update_raycast():
-	self.raycast.cast_to = self.velocity / 10
 
 func set_is_sinked(value: bool):
 	is_sinked = value
@@ -62,14 +57,14 @@ func set_is_sinkable(value: bool):
 	self.sprite.modulate = Color(1.0,1.0,1.0,0.5) if is_sinkable else Color(1.0,1.0,1.0,1.0)
 	self.feet.disabled = is_sinkable
 	self.head.disabled = is_sinkable
-	
+
 	if not is_sinkable:
 		anim.play("jump")
 		anim.queue("falling")
 
 func set_is_grounded(value: bool):
 	is_grounded = value
- 
+
 func update_animation():
 	if is_grounded:
 		if move_direction != 0:
@@ -80,14 +75,14 @@ func update_animation():
 	else:
 		if move_direction != 0:
 			self.sprite.flip_h = move_direction < 0
-		
+
 		if is_sinkable:
 			anim.play("rolling")
 
 func update_wall_direction():
 	var wall_on_left = get_is_valid_wall(self.left_side_raycasts)
 	var wall_on_right = get_is_valid_wall(self.right_side_raycasts)
-	
+
 	if wall_on_left and wall_on_right:
 		self.wall_direction = self.move_direction
 	else:

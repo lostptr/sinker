@@ -434,4 +434,3 @@ scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="update_me" from="Player" to="UI" method="_on_Player_update_me"]

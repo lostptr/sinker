@@ -1,17 +1,24 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://core/player/sinker-3.png" type="Texture" id=1]
-[ext_resource path="res://core/player/Player.gd" type="Script" id=2]
+[ext_resource path="res://core/player/state machine/PlayerFSM.gd" type="Script" id=2]
 [ext_resource path="res://core/player/inverse_shader.shader" type="Shader" id=3]
+[ext_resource path="res://core/player/state machine/Run.gd" type="Script" id=4]
+[ext_resource path="res://core/player/state machine/Idle.gd" type="Script" id=5]
+[ext_resource path="res://core/player/state machine/Jump.gd" type="Script" id=6]
+[ext_resource path="res://core/player/state machine/Falling.gd" type="Script" id=7]
+[ext_resource path="res://fonts/reblinking/reblinking.tres" type="DynamicFont" id=8]
+[ext_resource path="res://core/player/DebugLabel.gd" type="Script" id=9]
+[ext_resource path="res://core/player/state machine/Sinkable.gd" type="Script" id=10]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )
 
-[sub_resource type="CapsuleShape2D" id=11]
+[sub_resource type="CapsuleShape2D" id=2]
 radius = 4.0
 height = 6.0
 
-[sub_resource type="CapsuleShape2D" id=12]
+[sub_resource type="CapsuleShape2D" id=3]
 radius = 7.0
 height = 6.0
 
@@ -266,9 +273,50 @@ tracks/2/keys = {
 [node name="Player" type="KinematicBody2D"]
 collision_mask = 2
 script = ExtResource( 2 )
-gravity = 800.0
-move_speed = 250.0
-jump_velocity = -350.0
+gravity = 850.0
+move_speed = 240.0
+
+[node name="Debug" type="Node2D" parent="."]
+position = Vector2( -7, -22 )
+z_index = 10
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="DebugLabel" type="Label" parent="Debug"]
+margin_left = -13.0
+margin_right = 29.0
+margin_bottom = 12.0
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "falling"
+align = 1
+uppercase = true
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource( 5 )
+
+[node name="Run" type="Node" parent="States"]
+script = ExtResource( 4 )
+
+[node name="Jump" type="Node" parent="States"]
+script = ExtResource( 6 )
+
+[node name="Falling" type="Node" parent="States"]
+script = ExtResource( 7 )
+
+[node name="Sinkable" type="Node" parent="States"]
+script = ExtResource( 10 )
+
+[node name="SinkTimer" type="Timer" parent="States/Sinkable"]
+wait_time = 0.1
+one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -277,24 +325,20 @@ smoothing_enabled = true
 
 [node name="Sprite" type="Sprite" parent="."]
 material = SubResource( 1 )
+position = Vector2( 0, 6 )
 z_index = 10
 texture = ExtResource( 1 )
 hframes = 24
+frame = 5
 
 [node name="FeetCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 10 )
 rotation = 1.5708
-shape = SubResource( 11 )
+shape = SubResource( 2 )
 
 [node name="HeadCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 3 )
-shape = SubResource( 12 )
-
-[node name="Direction" type="RayCast2D" parent="."]
-visible = false
-enabled = true
-cast_to = Vector2( 0, 10 )
-collide_with_bodies = false
+shape = SubResource( 3 )
 
 [node name="WallRaycasts" type="Node2D" parent="."]
 
@@ -323,7 +367,6 @@ enabled = true
 cast_to = Vector2( 4, 0 )
 
 [node name="SinkedTrigger" type="Area2D" parent="."]
-visible = false
 position = Vector2( 0, -3 )
 gravity = 0.0
 collision_layer = 4
@@ -336,10 +379,6 @@ __meta__ = {
 position = Vector2( 0, 1 )
 shape = SubResource( 4 )
 
-[node name="SinkTimer" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
 anims/falling = SubResource( 5 )
@@ -348,5 +387,6 @@ anims/jump = SubResource( 7 )
 anims/landed = SubResource( 8 )
 anims/rolling = SubResource( 9 )
 anims/run = SubResource( 10 )
-[connection signal="body_exited" from="SinkedTrigger" to="." method="_on_SinkedTrigger_body_exited"]
-[connection signal="timeout" from="SinkTimer" to="." method="_on_SinkTimer_timeout"]
+[connection signal="state_changed" from="." to="Debug/DebugLabel" method="_on_Player_state_changed"]
+[connection signal="timeout" from="States/Sinkable/SinkTimer" to="States/Sinkable" method="_on_SinkTimer_timeout"]
+[connection signal="body_exited" from="SinkedTrigger" to="States/Sinkable" method="_on_SinkedTrigger_body_exited"]
