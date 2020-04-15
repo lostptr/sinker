@@ -1,10 +1,12 @@
 extends State
 
 onready var sink_timer: Timer = $SinkTimer
+var is_midway: bool = false
+var waiting_to_finish: bool = false
 
 func handle_input(event: InputEvent) -> void:
 	if event.is_action_pressed("sink"):
-		emit_signal("finished", "falling")
+		request_finish_state()
 
 func enter() -> void:
 	self.owner.anim.play("rolling")
@@ -22,11 +24,20 @@ func exit() -> void:
 
 	# Make sprite normal again.
 	self.owner.sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	# Ask to correct sunken state when exit sinkable state.
+	self.owner.request_sunken_state_correction()
 
 func _on_SinkedTrigger_body_exited(body: Node) -> void:
-	print(not self.owner.is_sunken)
+	self.is_midway = false
 	self.owner.is_sunken = not self.owner.is_sunken
 	self.sink_timer.start()
 
 func _on_SinkTimer_timeout() -> void:
-	emit_signal("finished", "falling")
+	request_finish_state()
+
+func _on_SinkedTrigger_body_entered(body: Node) -> void:
+	self.is_midway = true
+
+func request_finish_state():
+	if not is_midway:
+		emit_signal("finished", "falling")

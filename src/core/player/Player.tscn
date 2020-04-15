@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://core/player/sinker-3.png" type="Texture" id=1]
 [ext_resource path="res://core/player/state machine/PlayerFSM.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://fonts/reblinking/reblinking.tres" type="DynamicFont" id=8]
 [ext_resource path="res://core/player/DebugLabel.gd" type="Script" id=9]
 [ext_resource path="res://core/player/state machine/Sinkable.gd" type="Script" id=10]
+[ext_resource path="res://core/player/CorrectionSystem.gd" type="Script" id=11]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )
@@ -318,6 +319,11 @@ script = ExtResource( 10 )
 wait_time = 0.1
 one_shot = true
 
+[node name="CorrectionSystem" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+script = ExtResource( 11 )
+
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.5, 0.5 )
@@ -389,4 +395,6 @@ anims/rolling = SubResource( 9 )
 anims/run = SubResource( 10 )
 [connection signal="state_changed" from="." to="Debug/DebugLabel" method="_on_Player_state_changed"]
 [connection signal="timeout" from="States/Sinkable/SinkTimer" to="States/Sinkable" method="_on_SinkTimer_timeout"]
+[connection signal="timeout" from="CorrectionSystem" to="CorrectionSystem" method="_on_CorrectionSystem_timeout"]
+[connection signal="body_entered" from="SinkedTrigger" to="States/Sinkable" method="_on_SinkedTrigger_body_entered"]
 [connection signal="body_exited" from="SinkedTrigger" to="States/Sinkable" method="_on_SinkedTrigger_body_exited"]

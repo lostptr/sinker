@@ -13,6 +13,9 @@ onready var anim: AnimationPlayer = $AnimationPlayer
 onready var feet: CollisionShape2D = $FeetCollision
 onready var head: CollisionShape2D = $HeadCollision
 
+onready var grid: TileMap = get_parent().get_node("TileMap")
+onready var correction_timer: Timer = $CorrectionSystem
+
 var current_state = null
 onready var states_map = {
 	"idle": $States/Idle,
@@ -46,6 +49,10 @@ func _physics_process(delta: float) -> void:
 	self.current_state.update(delta)
 
 func _input(event: InputEvent) -> void:
+
+	if event is InputEventKey and event.scancode == KEY_R:
+		get_tree().change_scene("res://core/Sandbox.tscn")
+
 	# It's possible to become sinkable in any state.
 	if event.is_action_pressed("sink"):
 		_change_state("sinkable")
@@ -90,3 +97,10 @@ func set_colliders(state: bool):
 	self.feet.disabled = not state
 	self.head.disabled = not state
 
+func request_sunken_state_correction():
+	self.correction_timer.start()
+
+func correct_sunk_state(is_sunken_area: bool) -> void:
+	if is_sunken != is_sunken_area:
+		print("correcting...")
+		self.is_sunken = is_sunken_area

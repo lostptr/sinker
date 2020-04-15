@@ -1,10 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://core/tileset/simple_black.tres" type="TileSet" id=1]
 [ext_resource path="res://core/player/Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://core/UI.gd" type="Script" id=3]
 [ext_resource path="res://core/spikes/Spikes.tscn" type="PackedScene" id=4]
-[ext_resource path="res://fonts/firacode/firacode_regular.tres" type="DynamicFont" id=5]
 [ext_resource path="res://fonts/reblinking/reblinking.tres" type="DynamicFont" id=6]
 
 [node name="Sandbox" type="Node"]
@@ -16,56 +14,10 @@ position = Vector2( 143, 386 )
 
 [node name="UI" type="CanvasLayer" parent="."]
 layer = -10
-script = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="UI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
-anchor_left = 0.016
-anchor_top = 0.027
-anchor_right = 0.266
-anchor_bottom = 0.307
-margin_left = -0.384001
-margin_top = -0.200001
-margin_right = -0.384003
-margin_bottom = -0.200012
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="UI/VBoxContainer"]
-margin_right = 256.0
-margin_bottom = 16.0
-custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0, 0.0156863, 0.698039, 1 )
-text = "Grounded:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label2" type="Label" parent="UI/VBoxContainer"]
-margin_top = 20.0
-margin_right = 256.0
-margin_bottom = 36.0
-custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0, 0.0156863, 0.698039, 1 )
-text = "Sinkable:"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label3" type="Label" parent="UI/VBoxContainer"]
-margin_top = 40.0
-margin_right = 256.0
-margin_bottom = 56.0
-custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0, 0.0156863, 0.698039, 1 )
-text = "Sank:"
 __meta__ = {
 "_edit_use_anchors_": false
 }
