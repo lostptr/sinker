@@ -17,8 +17,11 @@ func update(delta: float) -> void:
 		else:
 			emit_signal("finished", "run")
 	else:
-		if self.owner.is_falling():
+		if self.owner.wall_direction != 0 and self.owner.wall_jump_is_ready():
+			emit_signal("finished", "wall_slide")
+		elif self.owner.is_falling():
 			emit_signal("finished", "falling")
+
 
 func exit() -> void:
 	pass

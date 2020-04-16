@@ -13,6 +13,8 @@ func update(delta: float) -> void:
 			emit_signal("finished", "idle")
 		else:
 			emit_signal("finished", "run")
+	elif self.owner.wall_direction != 0 and self.owner.wall_jump_is_ready():
+		emit_signal("finished", "wall_slide")
 
 func exit() -> void:
 	pass
