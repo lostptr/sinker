@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://core/player/sinker-3.png" type="Texture" id=1]
 [ext_resource path="res://core/player/state machine/PlayerFSM.gd" type="Script" id=2]
@@ -7,7 +7,7 @@
 [ext_resource path="res://core/player/state machine/Idle.gd" type="Script" id=5]
 [ext_resource path="res://core/player/state machine/Jump.gd" type="Script" id=6]
 [ext_resource path="res://core/player/state machine/Falling.gd" type="Script" id=7]
-[ext_resource path="res://fonts/reblinking/reblinking.tres" type="DynamicFont" id=8]
+[ext_resource path="res://fonts/reblinking/reblinking.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://core/player/DebugLabel.gd" type="Script" id=9]
 [ext_resource path="res://core/player/state machine/Sinkable.gd" type="Script" id=10]
 [ext_resource path="res://core/player/CorrectionSystem.gd" type="Script" id=11]
@@ -15,20 +15,26 @@
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )
 
-[sub_resource type="CapsuleShape2D" id=2]
-radius = 4.0
-height = 6.0
+[sub_resource type="DynamicFont" id=2]
+size = 5
+font_data = ExtResource( 8 )
 
-[sub_resource type="CapsuleShape2D" id=3]
-radius = 7.0
-height = 6.0
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 3 )
 
 [sub_resource type="CapsuleShape2D" id=4]
 radius = 4.0
+height = 6.0
+
+[sub_resource type="CapsuleShape2D" id=5]
+radius = 7.0
+height = 6.0
+
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 4.0
 height = 2.0
 
-[sub_resource type="Animation" id=5]
-resource_name = "falling"
+[sub_resource type="Animation" id=7]
 length = 0.5
 loop = true
 tracks/0/type = "value"
@@ -68,7 +74,7 @@ tracks/2/keys = {
 "values": [ Vector2( 0, 6 ) ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=8]
 length = 2.0
 loop = true
 tracks/0/type = "value"
@@ -108,8 +114,7 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "jump"
+[sub_resource type="Animation" id=9]
 length = 0.4
 step = 0.05
 tracks/0/type = "value"
@@ -149,8 +154,7 @@ tracks/2/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1.11111, 0.944444 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=8]
-resource_name = "landed"
+[sub_resource type="Animation" id=10]
 length = 0.35
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -189,8 +193,7 @@ tracks/2/keys = {
 "values": [ Vector2( 1.05556, 0.916667 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=9]
-resource_name = "rolling"
+[sub_resource type="Animation" id=11]
 length = 0.7
 loop = true
 tracks/0/type = "value"
@@ -230,7 +233,7 @@ tracks/2/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1.05556, 0.888889 ) ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=12]
 length = 0.4
 loop = true
 step = 0.05
@@ -271,6 +274,109 @@ tracks/2/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, 0.5 ), Vector2( 0, 1 ) ]
 }
 
+[sub_resource type="Animation" id=13]
+resource_name = "wall_slide_left"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 23 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( -4.1, 6 ), Vector2( -4.1, 6.676 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.969939, 1.03758 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite:flip_h")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "wall_slide_right"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 23 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 4, 6 ), Vector2( 4, 6.676 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.969939, 1.03758 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite:flip_h")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
 [node name="Player" type="KinematicBody2D"]
 collision_mask = 2
 script = ExtResource( 2 )
@@ -285,10 +391,11 @@ __meta__ = {
 }
 
 [node name="DebugLabel" type="Label" parent="Debug"]
+material = SubResource( 1 )
 margin_left = -13.0
 margin_right = 29.0
 margin_bottom = 12.0
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "falling"
 align = 1
@@ -330,47 +437,52 @@ zoom = Vector2( 0.5, 0.5 )
 smoothing_enabled = true
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 1 )
-position = Vector2( 0, 6 )
+material = SubResource( 3 )
+position = Vector2( 3, 6 )
 z_index = 10
 texture = ExtResource( 1 )
+flip_h = true
 hframes = 24
-frame = 5
+frame = 23
 
 [node name="FeetCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 10 )
 rotation = 1.5708
-shape = SubResource( 2 )
+shape = SubResource( 4 )
 
 [node name="HeadCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 3 )
-shape = SubResource( 3 )
+shape = SubResource( 5 )
 
 [node name="WallRaycasts" type="Node2D" parent="."]
 
 [node name="LeftSideRaycasts" type="Node2D" parent="WallRaycasts"]
 
 [node name="RayCast2DTop" type="RayCast2D" parent="WallRaycasts/LeftSideRaycasts"]
-position = Vector2( -4, -4 )
+position = Vector2( -4, -1 )
 enabled = true
 cast_to = Vector2( -4, 0 )
+collision_mask = 2
 
 [node name="RayCast2DBottom" type="RayCast2D" parent="WallRaycasts/LeftSideRaycasts"]
-position = Vector2( -4, 12 )
+position = Vector2( -4, 10 )
 enabled = true
 cast_to = Vector2( -4, 0 )
+collision_mask = 2
 
 [node name="RightSideRaycasts" type="Node2D" parent="WallRaycasts"]
 
 [node name="RayCast2DTop" type="RayCast2D" parent="WallRaycasts/RightSideRaycasts"]
-position = Vector2( 4, -4 )
+position = Vector2( 4, -1 )
 enabled = true
 cast_to = Vector2( 4, 0 )
+collision_mask = 2
 
 [node name="RayCast2DBottom" type="RayCast2D" parent="WallRaycasts/RightSideRaycasts"]
-position = Vector2( 4, 12 )
+position = Vector2( 4, 10 )
 enabled = true
 cast_to = Vector2( 4, 0 )
+collision_mask = 2
 
 [node name="SinkedTrigger" type="Area2D" parent="."]
 position = Vector2( 0, -3 )
@@ -383,16 +495,18 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SinkedTrigger"]
 position = Vector2( 0, 1 )
-shape = SubResource( 4 )
+shape = SubResource( 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/falling = SubResource( 5 )
-anims/idle = SubResource( 6 )
-anims/jump = SubResource( 7 )
-anims/landed = SubResource( 8 )
-anims/rolling = SubResource( 9 )
-anims/run = SubResource( 10 )
+anims/falling = SubResource( 7 )
+anims/idle = SubResource( 8 )
+anims/jump = SubResource( 9 )
+anims/landed = SubResource( 10 )
+anims/rolling = SubResource( 11 )
+anims/run = SubResource( 12 )
+anims/wall_slide_left = SubResource( 13 )
+anims/wall_slide_right = SubResource( 14 )
 [connection signal="state_changed" from="." to="Debug/DebugLabel" method="_on_Player_state_changed"]
 [connection signal="timeout" from="States/Sinkable/SinkTimer" to="States/Sinkable" method="_on_SinkTimer_timeout"]
 [connection signal="timeout" from="CorrectionSystem" to="CorrectionSystem" method="_on_CorrectionSystem_timeout"]
