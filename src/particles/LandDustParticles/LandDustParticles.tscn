@@ -1,0 +1,65 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://particles/OneShotParticle.gd" type="Script" id=1]
+[ext_resource path="res://effects/InvertColors/inverse_shader.shader" type="Shader" id=2]
+[ext_resource path="res://particles/SmokeTrail/smoke_one.png" type="Texture" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0.287356, 0.340909 ), 0.0, 0.0, 0, 0, Vector2( 0.609195, 0.177273 ), -1.43802, -1.43802, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[node name="LandDustParticle" type="Node2D"]
+
+[node name="LeftParticle" type="CPUParticles2D" parent="."]
+material = SubResource( 1 )
+emitting = false
+amount = 4
+lifetime = 0.8
+one_shot = true
+speed_scale = 2.0
+explosiveness = 0.8
+local_coords = false
+texture = ExtResource( 3 )
+direction = Vector2( -1, -0.25 )
+spread = 15.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 30.0
+angular_velocity = 90.0
+damping = 20.0
+scale_amount = 0.5
+scale_amount_curve = SubResource( 2 )
+script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="LeftParticle"]
+one_shot = true
+
+[node name="RightParticle" type="CPUParticles2D" parent="."]
+material = SubResource( 1 )
+scale = Vector2( -1, 1 )
+emitting = false
+lifetime = 0.8
+one_shot = true
+speed_scale = 2.0
+explosiveness = 0.8
+local_coords = false
+texture = ExtResource( 3 )
+direction = Vector2( -1, -0.25 )
+spread = 15.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 30.0
+angular_velocity = 90.0
+damping = 20.0
+scale_amount = 0.5
+scale_amount_random = 0.15
+scale_amount_curve = SubResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Timer" type="Timer" parent="RightParticle"]
+one_shot = true
+[connection signal="timeout" from="LeftParticle/Timer" to="LeftParticle" method="_on_Timer_timeout"]
+[connection signal="timeout" from="RightParticle/Timer" to="RightParticle" method="_on_Timer_timeout"]

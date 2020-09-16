@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://core/spikes/Spikes.gd" type="Script" id=1]
+[ext_resource path="res://core/spikes/spikes.png" type="Texture" id=2]
+
+[node name="SpikesCorner" type="Area2D"]
+collision_layer = 8
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+hframes = 4
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -4, -7, -4, 4, 7, 4, 7, 7, -7, 7, -7, -7 )
+[connection signal="area_entered" from="." to="." method="_on_Spikes_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_Spikes_body_entered"]

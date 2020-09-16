@@ -1,6 +1,8 @@
 extends State
 
 
+onready var land_sfx: AudioStreamPlayer = $LandSFX
+
 func handle_input(event: InputEvent) -> void:
 	pass
 
@@ -15,4 +17,7 @@ func update(delta: float) -> void:
 			emit_signal("finished", "run")
 
 func exit() -> void:
-	pass
+	if self.owner.is_grounded:
+		self.owner.anim.play("landed")
+		self.land_sfx.play()
+		self.owner.emmit_landing_particles()

@@ -1,6 +1,7 @@
 extends State
 
 onready var sink_timer: Timer = $SinkTimer
+onready var sinked_sfx: AudioStreamPlayer = $SinkedSFX
 var is_midway: bool = false
 var waiting_to_finish: bool = false
 
@@ -28,6 +29,8 @@ func exit() -> void:
 	self.owner.request_sunken_state_correction()
 
 func _on_SinkedTrigger_body_exited(body: Node) -> void:
+	self.sinked_sfx.play()
+	ScreenEffects.shockwave_effect.fire_at(self.owner.get_global_transform_with_canvas().origin)
 	self.is_midway = false
 	self.owner.is_sunken = not self.owner.is_sunken
 	self.sink_timer.start()

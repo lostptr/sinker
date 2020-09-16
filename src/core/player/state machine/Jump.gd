@@ -2,11 +2,14 @@ extends State
 
 export var jump_velocity: float = -350
 
+onready var jump_sfx: AudioStreamPlayer = $JumpSFX
+
 func handle_input(event: InputEvent) -> void:
 	pass
 
 func enter() -> void:
 	self.owner.anim.play("jump")
+	self.jump_sfx.play()
 	# Change vertical velocity.
 	self.owner.velocity.y = self.jump_velocity * self.owner.gravity_multiplier
 

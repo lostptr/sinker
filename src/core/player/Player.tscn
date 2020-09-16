@@ -1,8 +1,8 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://core/player/sinker-3.png" type="Texture" id=1]
 [ext_resource path="res://core/player/state machine/PlayerFSM.gd" type="Script" id=2]
-[ext_resource path="res://core/player/inverse_shader.shader" type="Shader" id=3]
+[ext_resource path="res://effects/InvertColors/inverse_shader.shader" type="Shader" id=3]
 [ext_resource path="res://core/player/state machine/Run.gd" type="Script" id=4]
 [ext_resource path="res://core/player/state machine/Idle.gd" type="Script" id=5]
 [ext_resource path="res://core/player/state machine/Jump.gd" type="Script" id=6]
@@ -11,6 +11,12 @@
 [ext_resource path="res://core/player/DebugLabel.gd" type="Script" id=9]
 [ext_resource path="res://core/player/state machine/Sinkable.gd" type="Script" id=10]
 [ext_resource path="res://core/player/CorrectionSystem.gd" type="Script" id=11]
+[ext_resource path="res://core/player/PlayerCamera.gd" type="Script" id=12]
+[ext_resource path="res://core/player/Paused.gd" type="Script" id=13]
+[ext_resource path="res://sfx/hop.wav" type="AudioStream" id=14]
+[ext_resource path="res://sfx/land jump.wav" type="AudioStream" id=15]
+[ext_resource path="res://sfx/whoosh_short.wav" type="AudioStream" id=16]
+[ext_resource path="res://core/player/state machine/Freeze.gd" type="Script" id=17]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )
@@ -19,26 +25,38 @@ shader = ExtResource( 3 )
 size = 5
 font_data = ExtResource( 8 )
 
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="AudioStreamRandomPitch" id=3]
+audio_stream = ExtResource( 14 )
+random_pitch = 1.25
+
+[sub_resource type="AudioStreamRandomPitch" id=4]
+audio_stream = ExtResource( 15 )
+random_pitch = 1.25
+
+[sub_resource type="AudioStreamRandomPitch" id=5]
+audio_stream = ExtResource( 16 )
+random_pitch = 1.2
+
+[sub_resource type="ShaderMaterial" id=6]
 shader = ExtResource( 3 )
 
-[sub_resource type="CapsuleShape2D" id=4]
+[sub_resource type="CapsuleShape2D" id=7]
 radius = 4.0
 height = 6.0
 
-[sub_resource type="CapsuleShape2D" id=5]
+[sub_resource type="CapsuleShape2D" id=8]
 radius = 7.0
 height = 6.0
 
-[sub_resource type="CapsuleShape2D" id=6]
+[sub_resource type="CapsuleShape2D" id=9]
 radius = 4.0
 height = 2.0
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=10]
 length = 0.5
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:scale")
+tracks/0/path = NodePath("VisualElements/Sprite:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -50,7 +68,7 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.944444, 1.05556 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
+tracks/1/path = NodePath("VisualElements/Sprite:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -62,7 +80,7 @@ tracks/1/keys = {
 "values": [ 5 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite:position")
+tracks/2/path = NodePath("VisualElements/Sprite:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -74,11 +92,11 @@ tracks/2/keys = {
 "values": [ Vector2( 0, 6 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=11]
 length = 2.0
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:position")
+tracks/0/path = NodePath("VisualElements/Sprite:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -90,7 +108,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, 0.5 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:scale")
+tracks/1/path = NodePath("VisualElements/Sprite:scale")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -102,7 +120,7 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1.05556, 0.972222 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite:frame")
+tracks/2/path = NodePath("VisualElements/Sprite:frame")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -114,11 +132,11 @@ tracks/2/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=12]
 length = 0.4
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("VisualElements/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -130,7 +148,7 @@ tracks/0/keys = {
 "values": [ 2, 3, 4, 5 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:position")
+tracks/1/path = NodePath("VisualElements/Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -142,7 +160,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, 1 ), Vector2( 0, 10 ), Vector2( 0, 8 ), Vector2( 0, 6 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite:scale")
+tracks/2/path = NodePath("VisualElements/Sprite:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -154,10 +172,10 @@ tracks/2/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1.11111, 0.944444 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=10]
-length = 0.35
+[sub_resource type="Animation" id=13]
+length = 0.5
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("VisualElements/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -169,7 +187,7 @@ tracks/0/keys = {
 "values": [ 2 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:position")
+tracks/1/path = NodePath("VisualElements/Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -181,7 +199,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 1.5 ), Vector2( 0, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite:scale")
+tracks/2/path = NodePath("VisualElements/Sprite:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -193,11 +211,11 @@ tracks/2/keys = {
 "values": [ Vector2( 1.05556, 0.916667 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=14]
 length = 0.7
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("VisualElements/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -209,7 +227,7 @@ tracks/0/keys = {
 "values": [ 16, 17, 18, 19, 20, 21, 22 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:position")
+tracks/1/path = NodePath("VisualElements/Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -221,7 +239,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 1, -2 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite:scale")
+tracks/2/path = NodePath("VisualElements/Sprite:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -233,12 +251,12 @@ tracks/2/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1.05556, 0.888889 ) ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=15]
 length = 0.4
 loop = true
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("VisualElements/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -250,7 +268,7 @@ tracks/0/keys = {
 "values": [ 8, 9, 10, 11 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:scale")
+tracks/1/path = NodePath("VisualElements/Sprite:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -262,7 +280,7 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1.05556, 0.972222 ), Vector2( 1.11111, 0.944444 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite:position")
+tracks/2/path = NodePath("VisualElements/Sprite:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -274,11 +292,10 @@ tracks/2/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, 0.5 ), Vector2( 0, 1 ) ]
 }
 
-[sub_resource type="Animation" id=13]
-resource_name = "wall_slide_left"
+[sub_resource type="Animation" id=16]
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("VisualElements/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -290,7 +307,7 @@ tracks/0/keys = {
 "values": [ 23 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:position")
+tracks/1/path = NodePath("VisualElements/Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -302,7 +319,7 @@ tracks/1/keys = {
 "values": [ Vector2( -4.1, 6 ), Vector2( -4.1, 6.676 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite:scale")
+tracks/2/path = NodePath("VisualElements/Sprite:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -314,7 +331,7 @@ tracks/2/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.969939, 1.03758 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("Sprite:flip_h")
+tracks/3/path = NodePath("VisualElements/Sprite:flip_h")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -326,10 +343,9 @@ tracks/3/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=14]
-resource_name = "wall_slide_right"
+[sub_resource type="Animation" id=17]
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
+tracks/0/path = NodePath("VisualElements/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -341,7 +357,7 @@ tracks/0/keys = {
 "values": [ 23 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:position")
+tracks/1/path = NodePath("VisualElements/Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -353,7 +369,7 @@ tracks/1/keys = {
 "values": [ Vector2( 4, 6 ), Vector2( 4, 6.676 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite:scale")
+tracks/2/path = NodePath("VisualElements/Sprite:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -365,7 +381,7 @@ tracks/2/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.969939, 1.03758 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("Sprite:flip_h")
+tracks/3/path = NodePath("VisualElements/Sprite:flip_h")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -377,13 +393,16 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[node name="Player" type="KinematicBody2D"]
-collision_mask = 2
+[node name="Player" type="KinematicBody2D" groups=[
+"player",
+]]
+collision_mask = 162
 script = ExtResource( 2 )
 gravity = 850.0
 move_speed = 240.0
 
 [node name="Debug" type="Node2D" parent="."]
+visible = false
 position = Vector2( -7, -22 )
 z_index = 10
 __meta__ = {
@@ -416,8 +435,19 @@ script = ExtResource( 4 )
 [node name="Jump" type="Node" parent="States"]
 script = ExtResource( 6 )
 
+[node name="JumpSFX" type="AudioStreamPlayer" parent="States/Jump"]
+stream = SubResource( 3 )
+volume_db = -8.0
+pitch_scale = 0.9
+bus = "SFX"
+
 [node name="Falling" type="Node" parent="States"]
 script = ExtResource( 7 )
+
+[node name="LandSFX" type="AudioStreamPlayer" parent="States/Falling"]
+stream = SubResource( 4 )
+volume_db = -8.0
+bus = "SFX"
 
 [node name="Sinkable" type="Node" parent="States"]
 script = ExtResource( 10 )
@@ -426,89 +456,88 @@ script = ExtResource( 10 )
 wait_time = 0.1
 one_shot = true
 
+[node name="SinkedSFX" type="AudioStreamPlayer" parent="States/Sinkable"]
+stream = SubResource( 5 )
+volume_db = -10.0
+pitch_scale = 0.8
+bus = "SFX"
+
+[node name="Paused" type="Node" parent="States"]
+script = ExtResource( 13 )
+
+[node name="Timer" type="Timer" parent="States/Paused"]
+wait_time = 0.8
+one_shot = true
+
+[node name="Freeze" type="Node" parent="States"]
+script = ExtResource( 17 )
+
 [node name="CorrectionSystem" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
 script = ExtResource( 11 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="PlayerCamera" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.5, 0.5 )
+limit_smoothed = true
 smoothing_enabled = true
+script = ExtResource( 12 )
 
-[node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 3 )
-position = Vector2( 3, 6 )
+[node name="VisualElements" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="VisualElements"]
+material = SubResource( 6 )
 z_index = 10
 texture = ExtResource( 1 )
-flip_h = true
 hframes = 24
-frame = 23
+
+[node name="RunParticlePosition" type="Position2D" parent="VisualElements"]
+position = Vector2( -13, 11 )
+__meta__ = {
+"_gizmo_extents_": 2.0
+}
+
+[node name="LandParticlePosition" type="Position2D" parent="VisualElements"]
+position = Vector2( 0, 14 )
 
 [node name="FeetCollision" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 10 )
+position = Vector2( 0, 11 )
 rotation = 1.5708
-shape = SubResource( 4 )
+shape = SubResource( 7 )
 
 [node name="HeadCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 3 )
-shape = SubResource( 5 )
+shape = SubResource( 8 )
 
-[node name="WallRaycasts" type="Node2D" parent="."]
-
-[node name="LeftSideRaycasts" type="Node2D" parent="WallRaycasts"]
-
-[node name="RayCast2DTop" type="RayCast2D" parent="WallRaycasts/LeftSideRaycasts"]
-position = Vector2( -4, -1 )
-enabled = true
-cast_to = Vector2( -4, 0 )
-collision_mask = 2
-
-[node name="RayCast2DBottom" type="RayCast2D" parent="WallRaycasts/LeftSideRaycasts"]
-position = Vector2( -4, 10 )
-enabled = true
-cast_to = Vector2( -4, 0 )
-collision_mask = 2
-
-[node name="RightSideRaycasts" type="Node2D" parent="WallRaycasts"]
-
-[node name="RayCast2DTop" type="RayCast2D" parent="WallRaycasts/RightSideRaycasts"]
-position = Vector2( 4, -1 )
-enabled = true
-cast_to = Vector2( 4, 0 )
-collision_mask = 2
-
-[node name="RayCast2DBottom" type="RayCast2D" parent="WallRaycasts/RightSideRaycasts"]
-position = Vector2( 4, 10 )
-enabled = true
-cast_to = Vector2( 4, 0 )
-collision_mask = 2
-
-[node name="SinkedTrigger" type="Area2D" parent="."]
+[node name="SinkedTrigger" type="Area2D" parent="." groups=[
+"player",
+]]
 position = Vector2( 0, -3 )
 gravity = 0.0
 collision_layer = 4
-collision_mask = 2
+collision_mask = 74
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SinkedTrigger"]
 position = Vector2( 0, 1 )
-shape = SubResource( 6 )
+shape = SubResource( 9 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/falling = SubResource( 7 )
-anims/idle = SubResource( 8 )
-anims/jump = SubResource( 9 )
-anims/landed = SubResource( 10 )
-anims/rolling = SubResource( 11 )
-anims/run = SubResource( 12 )
-anims/wall_slide_left = SubResource( 13 )
-anims/wall_slide_right = SubResource( 14 )
+anims/falling = SubResource( 10 )
+anims/idle = SubResource( 11 )
+anims/jump = SubResource( 12 )
+anims/landed = SubResource( 13 )
+anims/rolling = SubResource( 14 )
+anims/run = SubResource( 15 )
+anims/wall_slide_left = SubResource( 16 )
+anims/wall_slide_right = SubResource( 17 )
 [connection signal="state_changed" from="." to="Debug/DebugLabel" method="_on_Player_state_changed"]
 [connection signal="timeout" from="States/Sinkable/SinkTimer" to="States/Sinkable" method="_on_SinkTimer_timeout"]
+[connection signal="timeout" from="States/Paused/Timer" to="States/Paused" method="_on_Timer_timeout"]
 [connection signal="timeout" from="CorrectionSystem" to="CorrectionSystem" method="_on_CorrectionSystem_timeout"]
 [connection signal="body_entered" from="SinkedTrigger" to="States/Sinkable" method="_on_SinkedTrigger_body_entered"]
 [connection signal="body_exited" from="SinkedTrigger" to="States/Sinkable" method="_on_SinkedTrigger_body_exited"]

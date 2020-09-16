@@ -6,6 +6,7 @@ func handle_input(event: InputEvent) -> void:
 
 func enter() -> void:
 	self.owner.anim.play("run")
+	self.owner.emmit_run_particles()
 
 func update(delta: float) -> void:
 	if self.owner.move_direction == 0:
@@ -18,3 +19,4 @@ func update(delta: float) -> void:
 
 func exit() -> void:
 	pass
+
