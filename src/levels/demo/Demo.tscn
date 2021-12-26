@@ -191,7 +191,7 @@ font_data = ExtResource( 20 )
 
 [node name="Demo" instance=ExtResource( 1 )]
 debug = true
-debug_room = "RoomE"
+debug_room = "RoomA"
 
 [node name="GameOverBlack" parent="TransitionLayer" index="2"]
 visible = true
@@ -294,14 +294,12 @@ __meta__ = {
 [node name="RevealArea" parent="Rooms/RoomA" index="7" instance=ExtResource( 17 )]
 visible = true
 position = Vector2( -208, 8 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip1") ]
 shape = SubResource( 2 )
 
 [node name="RevealArea2" parent="Rooms/RoomA" index="8" instance=ExtResource( 17 )]
 visible = true
 position = Vector2( -64, 0 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip2") ]
 shape = SubResource( 3 )
 
@@ -467,25 +465,21 @@ __meta__ = {
 
 [node name="RevealArea" parent="Rooms/RoomB" index="11" instance=ExtResource( 17 )]
 position = Vector2( 32, 647 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip3") ]
 shape = SubResource( 5 )
 
 [node name="RevealArea4" parent="Rooms/RoomB" index="12" instance=ExtResource( 17 )]
 position = Vector2( -14, 490 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip6") ]
 shape = SubResource( 6 )
 
 [node name="RevealArea2" parent="Rooms/RoomB" index="13" instance=ExtResource( 17 )]
 position = Vector2( 169, 603 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip4") ]
 shape = SubResource( 5 )
 
 [node name="RevealArea3" parent="Rooms/RoomB" index="14" instance=ExtResource( 17 )]
 position = Vector2( 375, 666 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip5") ]
 shape = SubResource( 7 )
 
@@ -579,7 +573,6 @@ __meta__ = {
 [node name="RevealArea" parent="Rooms/RoomC" index="9" instance=ExtResource( 17 )]
 visible = true
 position = Vector2( 1000, 227 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip7"), NodePath("../Tip8") ]
 shape = SubResource( 10 )
 
@@ -596,7 +589,7 @@ custom_fonts/normal_font = ExtResource( 6 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = " [shake\"]Don't be ridiculous!\""
-text = " Don't be ridiculous!\""
+text = " [shake\"]Don't be ridiculous!\""
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -622,7 +615,6 @@ __meta__ = {
 [node name="RevealArea2" parent="Rooms/RoomC" index="12" instance=ExtResource( 17 )]
 visible = true
 position = Vector2( 1424, 232 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip9"), NodePath("../Tip10") ]
 shape = SubResource( 10 )
 
@@ -663,7 +655,6 @@ __meta__ = {
 [node name="RevealArea3" parent="Rooms/RoomC" index="15" instance=ExtResource( 17 )]
 visible = true
 position = Vector2( 1736, 232 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip"), NodePath("../Tip3") ]
 shape = SubResource( 11 )
 
@@ -713,7 +704,6 @@ texture = ExtResource( 16 )
 [node name="RevealArea4" parent="Rooms/RoomC" index="18" instance=ExtResource( 17 )]
 visible = true
 position = Vector2( 2208, 240 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip2") ]
 shape = SubResource( 12 )
 
@@ -2114,7 +2104,6 @@ modulate = Color( 1, 1, 1, 0.25 )
 position = Vector2( 96, -1040 )
 size = 32
 enabled = false
-inverted = false
 
 [node name="Switch" parent="Rooms/RoomD" index="6" instance=ExtResource( 13 )]
 position = Vector2( 720, -1048 )
@@ -2130,7 +2119,6 @@ position = Vector2( 224, -1344 )
 scale = Vector2( 1, -1 )
 size = 18
 enabled = false
-inverted = false
 
 [node name="Platform3" parent="Rooms/RoomD" index="9" instance=ExtResource( 12 )]
 position = Vector2( 784, -1344 )
@@ -2197,14 +2185,12 @@ __meta__ = {
 [node name="RevealArea" parent="Rooms/RoomD" index="16" instance=ExtResource( 17 )]
 visible = true
 position = Vector2( 88, -1048 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip") ]
 shape = SubResource( 16 )
 
 [node name="RevealArea2" parent="Rooms/RoomD" index="17" instance=ExtResource( 17 )]
 visible = true
 position = Vector2( 568, -1376 )
-duration = 1.0
 items_to_reveal_path = [ NodePath("../Tip2") ]
 shape = SubResource( 17 )
 
@@ -2481,8 +2467,6 @@ tile_data = PoolIntArray( -8650769, 0, 0, -8650768, 0, 1, -8650767, 0, 1, -86507
 
 [node name="Stalker" parent="Rooms/RoomE" index="4" instance=ExtResource( 18 )]
 position = Vector2( 96, -1856 )
-speed = 1.0
-detect_radius = 200.0
 
 [node name="Stalker2" parent="Rooms/RoomE" index="5" instance=ExtResource( 18 )]
 position = Vector2( 640, -1928 )
@@ -2492,7 +2476,6 @@ detect_radius = 300.0
 [node name="Stalker3" parent="Rooms/RoomE" index="6" instance=ExtResource( 18 )]
 position = Vector2( 1040, -1888 )
 speed = 1.5
-detect_radius = 200.0
 
 [node name="Stalker4" parent="Rooms/RoomE" index="7" instance=ExtResource( 18 )]
 position = Vector2( 1464, -1912 )
@@ -2503,7 +2486,6 @@ detect_radius = 250.0
 position = Vector2( 464, -1952 )
 scale = Vector2( 1, -1 )
 size = 24
-inverted = false
 
 [node name="Cutscenes" type="AnimationPlayer" parent="." index="4"]
 anims/discovery = SubResource( 18 )
@@ -2621,6 +2603,7 @@ text = "\"It's the only way they can save her.\""
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="reset" from="Player" to="." method="_on_Player_reset"]
 [connection signal="body_entered" from="Rooms/RoomA/Portal" to="Rooms/RoomA/Portal" method="_on_Portal_body_entered"]
 [connection signal="body_entered" from="Rooms/RoomB/Portal" to="Rooms/RoomB/Portal" method="_on_Portal_body_entered"]
